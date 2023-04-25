@@ -1,28 +1,50 @@
 import React, { useState, useEffect } from "react";
-import socketIOClient from "socket.io-client";
-import Button from 'react-bootstrap/Button';
+import { useNavigate } from "react-router-dom";
+import Button from "react-bootstrap/Button";
 import AuthService from "../services/auth.service";
-import AppService from "../services/app.service";
 
-const ENDPOINT = process.env.REACT_APP_API_URL;
-
-function Dashboard(){
+function Dashboard({socket}) {
   const [response, setResponse] = useState("");
-  const [loadClient, setLoadClient] = useState(false);
-
+  const [tempValue, setTempValue] = useState(0);
+  const navigate = useNavigate();
   useEffect(() => {
-    const socket = socketIOClient(ENDPOINT);
-    socket.on("FromAPI", data => {
+    const user = AuthService.getCurrentUser();
+    if (!user) {
+      navigate('/')
+    }
+    socket.on("TempAPI", data => {
       setResponse(data);
     });
-    return () => socket.disconnect();
   }, []);
+
+  const handleSendTemp = (e) => {
+    e.preventDefault();
+    const userID = JSON.parse(localStorage.getItem('user')).user._id;
+    if (tempValue && userID) {
+      console.log(tempValue);
+      socket.emit('message', {
+        text: tempValue,
+        userID: userID,
+        id: `${socket.id}${Math.random()}`,
+        socketID: socket.id,
+      });
+    }
+  };
 
   return (
     <>
-    <p>
-      Message from server: {response}
-    </p>
+      {response}
+      <br/>
+      <input
+          type="text"
+          placeholder="Temp value"
+          className="tempValue mt-5"
+          value={tempValue}
+          onChange={(e) => setTempValue(e.target.value)}
+        />
+        <br/>
+      <Button className="sendBtn mt-3" onClick={handleSendTemp}>SEND</Button>
+      
     </>
   );
 }

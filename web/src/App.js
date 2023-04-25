@@ -1,18 +1,16 @@
 import React, { Component } from "react";
 import { Routes, Route, Link } from "react-router-dom";
-import "bootstrap/dist/css/bootstrap.min.css";
-import "./App.css";
-
 import AuthService from "./services/auth.service";
-
 import Login from "./components/login.component";
 import Register from "./components/register.component";
 import Home from "./components/home.component";
 import Dashboard from "./components/dashboard.component";
-
-// import AuthVerify from "./common/auth-verify";
 import EventBus from "./common/EventBus";
+import "bootstrap/dist/css/bootstrap.min.css";
+import "./App.css";
+import socketIO from 'socket.io-client';
 
+const socket = socketIO.connect(process.env.REACT_APP_API_URL);
 class App extends Component {
   constructor(props) {
     super(props);
@@ -55,11 +53,11 @@ class App extends Component {
       <div>
         <nav className="navbar navbar-expand navbar-dark bg-dark">
           <Link to={"/"} className="navbar-brand">
-            BlueCloud
+            Health Monitoring
           </Link>
           <div className="navbar-nav mr-auto">
             <li className="nav-item">
-              <Link to={"/home"} className="nav-link">
+              <Link to={"/"} className="nav-link">
                 Home
               </Link>
             </li>
@@ -97,15 +95,12 @@ class App extends Component {
 
         <div className="container mt-3">
           <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/home" element={<Home />} />
+            <Route path="/" element={<Home socket={socket}/>} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
-            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/dashboard" element={<Dashboard socket={socket}/>} />
           </Routes>
         </div>
-
-        {/* <AuthVerify logOut={this.logOut}/> */}
       </div>
     );
   }

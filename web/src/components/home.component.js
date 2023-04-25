@@ -1,21 +1,19 @@
-import React, { Component } from "react";
+import React, { useState, useEffect } from "react";
+import Button from 'react-bootstrap/Button';
+import AuthService from "../services/auth.service";
 import AppService from "../services/app.service";
 
-export default class Home extends Component {
-  constructor(props) {
-    super(props);
+function Home({socket}){
+  const [response, setResponse] = useState("");
+  const [serverHello, setServerHello] = useState("");
 
-    this.state = {
-      content: ""
-    };
-  }
-
-  componentDidMount() {
+  useEffect(() => {
+    socket.on("TempAPI", data => {
+      setResponse(data);
+    });
     AppService.getTestContent().then(
       response => {
-        this.setState({
-          content: response.data
-        });
+        setServerHello(response.data);
       },
       error => {
         this.setState({
@@ -26,13 +24,16 @@ export default class Home extends Component {
         });
       }
     );
-  }
+  }, []);
 
-  render() {
-    return (
-      <div className="container">
-          <p style={{ position: 'fixed', bottom: 0, left: '1em' }}>{this.state.content}</p>
-      </div>
-    );
-  }
+  return (
+    <>
+    {response}
+    <div className="container">
+        <p style={{ position: 'fixed', bottom: 0, left: '1em' }}>{serverHello}</p>
+    </div>
+    </>
+  );
 }
+
+export default Home;
