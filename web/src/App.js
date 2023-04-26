@@ -8,9 +8,7 @@ import Dashboard from "./components/dashboard.component";
 import EventBus from "./common/EventBus";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
-import socketIO from 'socket.io-client';
 
-const socket = socketIO.connect(process.env.REACT_APP_API_URL);
 class App extends Component {
   constructor(props) {
     super(props);
@@ -95,10 +93,10 @@ class App extends Component {
 
         <div className="container mt-3">
           <Routes>
-            <Route path="/" element={<Home socket={socket}/>} />
-            <Route path="/login" element={<Login />} />
+            <Route path="/" element={<Home/>} />
+            <Route path="/login" element={<Login/>} />
             <Route path="/register" element={<Register />} />
-            <Route path="/dashboard" element={<Dashboard socket={socket}/>} />
+            <Route path="/dashboard" element={<Dashboard/>} />
           </Routes>
         </div>
       </div>

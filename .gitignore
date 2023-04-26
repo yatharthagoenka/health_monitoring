@@ -2,3 +2,4 @@ server/node_modules
 server/.env
 web/.env
 web/node_modules
+webv2/node_modules

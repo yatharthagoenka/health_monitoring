@@ -2,32 +2,32 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Button from "react-bootstrap/Button";
 import AuthService from "../services/auth.service";
+import {socket} from "../services/socket.service"
 
-function Dashboard({socket}) {
-  const [response, setResponse] = useState("");
+function Dashboard() {
+  const [response, setResponse] = useState([]);
   const [tempValue, setTempValue] = useState(0);
   const navigate = useNavigate();
+  const user = AuthService.getCurrentUser();
   useEffect(() => {
-    const user = AuthService.getCurrentUser();
     if (!user) {
       navigate('/')
     }
-    socket.on("TempAPI", data => {
-      setResponse(data);
-    });
   }, []);
 
   const handleSendTemp = (e) => {
     e.preventDefault();
     const userID = JSON.parse(localStorage.getItem('user')).user._id;
     if (tempValue && userID) {
-      console.log(tempValue);
-      socket.emit('message', {
-        text: tempValue,
-        userID: userID,
-        id: `${socket.id}${Math.random()}`,
-        socketID: socket.id,
-      });
+      let i = 0;
+      const intervalId = setInterval(() => {
+        if (i >= 30) {
+          clearInterval(intervalId);
+          return;
+        }
+        socket.emit('temp_sender', Math.floor(Math.random() * 110) + 1);
+        i++;
+      }, 1000);
     }
   };
 

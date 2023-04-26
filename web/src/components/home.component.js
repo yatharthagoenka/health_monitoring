@@ -3,14 +3,10 @@ import Button from 'react-bootstrap/Button';
 import AuthService from "../services/auth.service";
 import AppService from "../services/app.service";
 
-function Home({socket}){
-  const [response, setResponse] = useState("");
+function Home(){
   const [serverHello, setServerHello] = useState("");
 
   useEffect(() => {
-    socket.on("TempAPI", data => {
-      setResponse(data);
-    });
     AppService.getTestContent().then(
       response => {
         setServerHello(response.data);
@@ -28,7 +24,6 @@ function Home({socket}){
 
   return (
     <>
-    {response}
     <div className="container">
         <p style={{ position: 'fixed', bottom: 0, left: '1em' }}>{serverHello}</p>
     </div>

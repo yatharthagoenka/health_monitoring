@@ -33,23 +33,28 @@ socketIO.on("connection", (socket) => {
   if (interval) {
     clearInterval(interval);
   }
-  interval = setInterval(() => getTempApiAndEmit(socket), 1000);
 
-  socket.on('message', (data) => {
-    temp_value = data.text;
-    console.log(`recv_client: ${data.text}`);
+  // interval = setInterval(() => getTempApiAndEmit(socket), 1000);
+
+  socket.on('temp_sender', (data) => {
+    console.log(`Relaying temp value: ${data}`);
+    socketIO.emit('temp_receiver', data);
   });
 
+  socket.on('join', (data) => {
+    socket.join(data.room);
+    console.log(`Socket ${socket.id} connected to room ${data.room}`);
+  });
+  
   socket.on("disconnect", () => {
     console.log("Client disconnected");
     clearInterval(interval);
   });
 });
 
-const getTempApiAndEmit = socket => {
-    const response = temp_value;
-    socket.emit("FromAPI", response);
-};
+// const getTempApiAndEmit = socket => {
+//   socket.emit("message", '33');
+// };
 
 http.listen(process.env.SERVER_PORT, () => {
   console.log(`Server listening on ${process.env.SERVER_PORT}`);

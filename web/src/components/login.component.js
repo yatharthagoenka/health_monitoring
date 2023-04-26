@@ -1,4 +1,5 @@
-import React, { Component } from "react";
+import React, { useState,Component } from "react";
+import { useNavigate } from "react-router-dom";
 import Form from "react-validation/build/form";
 import Input from "react-validation/build/input";
 import CheckButton from "react-validation/build/button";
@@ -15,72 +16,45 @@ const required = value => {
   }
 };
 
-class Login extends Component {
-  constructor(props) {
-    super(props);
-    this.handleLogin = this.handleLogin.bind(this);
-    this.onChangeUsername = this.onChangeUsername.bind(this);
-    this.onChangePassword = this.onChangePassword.bind(this);
+function Login(){
+  const [info, setInfo] = useState({
+    username: "",
+    password: "",
+    loading: false,
+    message: ""
+  });
+  const navigate = useNavigate();
 
-    this.state = {
-      username: "",
-      password: "",
-      loading: false,
-      message: ""
-    };
+  const onChangeUsername = (e) => {
+    setInfo({...info,  username: e.target.value})
+  };
+
+  const onChangePassword = (e) => {
+    setInfo({...info,  password: e.target.value})
   }
 
-  onChangeUsername(e) {
-    this.setState({
-      username: e.target.value
-    });
-  }
-
-  onChangePassword(e) {
-    this.setState({
-      password: e.target.value
-    });
-  }
-
-  handleLogin(e) {
+  const handleLogin = (e) => {
     e.preventDefault();
 
-    this.setState({
-      message: "",
-      loading: true
-    });
+    AuthService.login(info.username, info.password).then(
+      () => {
+        navigate("/dashboard");
+        window.location.reload();
+      },
+      error => {
+        const resMessage =
+          (error.response &&
+            error.response.data &&
+            error.response.data.message) ||
+          error.message ||
+          error.toString();
 
-    this.form.validateAll();
-
-    if (this.checkBtn.context._errors.length === 0) {
-      AuthService.login(this.state.username, this.state.password).then(
-        () => {
-          this.props.router.navigate("/dashboard");
-          window.location.reload();
-        },
-        error => {
-          const resMessage =
-            (error.response &&
-              error.response.data &&
-              error.response.data.message) ||
-            error.message ||
-            error.toString();
-
-          this.setState({
-            loading: false,
-            message: resMessage
-          });
-        }
-      );
-    } else {
-      this.setState({
-        loading: false
-      });
-    }
+        setInfo({...info,  message: e.target.value})
+      }
+    );
   }
 
-  render() {
-    return (
+  return (
       <div className="col-md-12">
         <div className="card card-container">
           <img
@@ -89,20 +63,15 @@ class Login extends Component {
             className="profile-img-card"
           />
 
-          <Form
-            onSubmit={this.handleLogin}
-            ref={c => {
-              this.form = c;
-            }}
-          >
+          <Form onSubmit={handleLogin}>
             <div className="form-group">
               <label htmlFor="username">Username</label>
               <Input
                 type="text"
                 className="form-control"
                 name="username"
-                value={this.state.username}
-                onChange={this.onChangeUsername}
+                value={info.username}
+                onChange={onChangeUsername}
                 validations={[required]}
               />
             </div>
@@ -113,8 +82,8 @@ class Login extends Component {
                 type="password"
                 className="form-control"
                 name="password"
-                value={this.state.password}
-                onChange={this.onChangePassword}
+                value={info.password}
+                onChange={onChangePassword}
                 validations={[required]}
               />
             </div>
@@ -122,33 +91,29 @@ class Login extends Component {
             <div className="form-group">
               <button
                 className="btn btn-primary btn-block"
-                disabled={this.state.loading}
+                disabled={info.loading}
               >
-                {this.state.loading && (
+                {info.loading && (
                   <span className="spinner-border spinner-border-sm"></span>
                 )}
                 <span>Login</span>
               </button>
             </div>
 
-            {this.state.message && (
+            {info.message && (
               <div className="form-group">
                 <div className="alert alert-danger" role="alert">
-                  {this.state.message}
+                  {info.message}
                 </div>
               </div>
             )}
             <CheckButton
               style={{ display: "none" }}
-              ref={c => {
-                this.checkBtn = c;
-              }}
             />
           </Form>
         </div>
       </div>
     );
-  }
 }
 
-export default withRouter(Login);
+export default Login;
