@@ -6,7 +6,7 @@ const Home = () => {
   return (
     <PageContainer title="Home" description="landing page">
       <Box>
-        <h1>BlueCloud</h1>
+        <h1>Vitality</h1>
       </Box>
     </PageContainer>
   );

@@ -53,7 +53,7 @@ const MonthlyUsage = () => {
 
   return (
     <DashboardCard
-      title="Monthly Usage"
+      title="Inconsistency alerts"
       action={
         <Fab color="secondary" size="medium" sx={{color: '#ffffff'}}>
           <IconDatabase width={24} />
@@ -65,7 +65,7 @@ const MonthlyUsage = () => {
     >
       <>
         <Typography variant="h3" fontWeight="700" mt="-20px">
-          586 MB
+          7 - 8
         </Typography>
         <Stack direction="row" spacing={1} my={1} alignItems="center">
           <Avatar sx={{ bgcolor: errorlight, width: 27, height: 27 }}>

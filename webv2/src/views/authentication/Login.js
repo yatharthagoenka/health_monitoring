@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Grid, Box, Card, Stack, Typography } from '@mui/material';
 import PageContainer from 'src/components/container/PageContainer';
-import logo from 'src/assets/images/logos/bc-logo.png';
+import logo from 'src/assets/images/logos/vitality_logo.png';
 import AuthLogin from './auth/AuthLogin';
 
 const Login2 = () => {
@@ -48,7 +48,7 @@ const Login2 = () => {
                 subtitle={
                   <Stack direction="row" spacing={1} justifyContent="center" mt={3}>
                     <Typography color="textSecondary" variant="h6" fontWeight="500">
-                      New to Bluecloud?
+                      New to Vitality?
                     </Typography>
                     <Typography
                       component={Link}

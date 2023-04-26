@@ -79,7 +79,7 @@ const GlobalActivity = () => {
     };
     const seriescolumnchart = [
         {
-            name: 'Files uploaded',
+            name: 'Data monitored',
             data: [355, 390, 300, 350, 390, 180, 355, 390],
         },
         {

@@ -1,10 +1,10 @@
 import { Box, Typography, List, Button, Drawer } from '@mui/material';
 import img1 from 'src/assets/images/backgrounds/rocket.png';
-import logo from 'src/assets/images/logos/bc-logo.png';
+import logo from 'src/assets/images/logos/vitality_logo.png';
 import { useLocation } from 'react-router';
 import NavItem from './NavItem';
 import NavGroup from './NavGroup/NavGroup';
-import {IconAperture, IconLayoutDashboard, IconSettings, IconUser} from '@tabler/icons';
+import {IconAperture, IconDroplet, IconHeart, IconLayoutDashboard, IconOctagon, IconSettings, IconThermometer, IconUser} from '@tabler/icons';
 import { uniqueId } from 'lodash';
 import { Link } from 'react-router-dom';
 import { styled } from '@mui/material';
@@ -14,7 +14,6 @@ const Menuitems = [
     navlabel: true,
     subheader: 'Home',
   },
-
   {
     id: uniqueId(),
     title: 'Dashboard',
@@ -23,9 +22,21 @@ const Menuitems = [
   },
   {
     id: uniqueId(),
-    title: 'Monitor',
-    icon: IconAperture,
-    href: '/user/monitor',
+    title: 'Temperature',
+    icon: IconThermometer,
+    href: '/user/temperature',
+  },
+  {
+    id: uniqueId(),
+    title: 'Pulse',
+    icon: IconHeart,
+    href: '/user/pulse',
+  },
+  {
+    id: uniqueId(),
+    title: 'SpO2',
+    icon: IconDroplet,
+    href: '/user/spo2',
   },
   {
     navlabel: true,
@@ -36,12 +47,6 @@ const Menuitems = [
     title: 'Profile',
     icon: IconUser,
     href: '/user/profile',
-  },
-  {
-    id: uniqueId(),
-    title: 'Setttings',
-    icon: IconSettings,
-    href: '/user/settings',
   },
 ];
 
@@ -81,7 +86,7 @@ const Sidebar = (props) => {
               height: '100%',
             }}
           >
-            <Box px={3}>
+            <Box px={3} ml={4}>
               <LinkStyled to="/user">
                 <img src={logo} height={90} />
               </LinkStyled>
@@ -100,24 +105,6 @@ const Sidebar = (props) => {
                       }
                     })}
                 </List>
-              </Box>
-              <Box
-                    display={'flex'}
-                    alignItems="center"
-                    gap={2}
-                    sx={{ m: 3, p: 3, bgcolor: `${'primary.light'}`, borderRadius: '8px' }}
-                >
-                <>
-                    <Box>
-                        <Typography variant="h6" mb={1}>Unlimited storage</Typography>
-                        <Button color="primary" target="_blank" variant="contained" aria-label="logout" size="small">
-                            Upgrade
-                        </Button>
-                    </Box>
-                    <Box mt="-35px">
-                        <img alt="Remy Sharp" src={img1} width={100} />
-                    </Box>
-                </>
               </Box>
             </Box>
           </Box>
