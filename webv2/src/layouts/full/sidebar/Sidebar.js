@@ -21,24 +21,6 @@ const Menuitems = [
     href: '/user/dashboard',
   },
   {
-    id: uniqueId(),
-    title: 'Temperature',
-    icon: IconThermometer,
-    href: '/user/temperature',
-  },
-  {
-    id: uniqueId(),
-    title: 'Pulse',
-    icon: IconHeart,
-    href: '/user/pulse',
-  },
-  {
-    id: uniqueId(),
-    title: 'SpO2',
-    icon: IconDroplet,
-    href: '/user/spo2',
-  },
-  {
     navlabel: true,
     subheader: 'INFO',
   },

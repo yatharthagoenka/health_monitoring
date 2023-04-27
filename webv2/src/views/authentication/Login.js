@@ -42,7 +42,7 @@ const Login2 = () => {
               <AuthLogin
                 subtext={
                   <Typography variant="subtitle1" textAlign="center" color="textSecondary" mb={3}>
-                    A cryptographic file storage system
+                    A real-time health monitoring system
                   </Typography>
                 }
                 subtitle={

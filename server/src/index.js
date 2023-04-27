@@ -34,11 +34,19 @@ socketIO.on("connection", (socket) => {
     clearInterval(interval);
   }
 
-  // interval = setInterval(() => getTempApiAndEmit(socket), 1000);
-
   socket.on('temp_sender', (data) => {
-    console.log(`Relaying temp value: ${data}`);
+    // console.log(`Relaying temp value: ${data}`);
     socketIO.emit('temp_receiver', data);
+  });
+
+  socket.on('pulse_sender', (data) => {
+    // console.log(`Relaying pulse value: ${data}`);
+    socketIO.emit('pulse_receiver', data);
+  });
+
+  socket.on('spo2_sender', (data) => {
+    // console.log(`Relaying spo2 value: ${data}`);
+    socketIO.emit('spo2_receiver', data);
   });
 
   socket.on('join', (data) => {
@@ -51,10 +59,6 @@ socketIO.on("connection", (socket) => {
     clearInterval(interval);
   });
 });
-
-// const getTempApiAndEmit = socket => {
-//   socket.emit("message", '33');
-// };
 
 http.listen(process.env.SERVER_PORT, () => {
   console.log(`Server listening on ${process.env.SERVER_PORT}`);

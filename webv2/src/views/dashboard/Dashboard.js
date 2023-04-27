@@ -1,9 +1,9 @@
 import React from 'react';
 import { Grid, Box } from '@mui/material';
 import PageContainer from 'src/components/container/PageContainer';
-import GlobalActivity from './components/GlobalActivity';
-import StorageStats from './components/StorageStats';
-import MonthlyUsage from './components/MonthlyUsage';
+import Temperature from './components/Temperature';
+import SpO2 from './components/SpO2';
+import Pulse from './components/Pulse';
 
 const Dashboard = () => {
   return (
@@ -11,15 +11,15 @@ const Dashboard = () => {
       <Box>
         <Grid container spacing={3}>
           <Grid item xs={12} lg={8}>
-            <GlobalActivity />
+            <Temperature />
           </Grid>
           <Grid item xs={12} lg={4}>
             <Grid container spacing={3}>
               <Grid item xs={12}>
-                <StorageStats />
+                <SpO2 />
               </Grid>
               <Grid item xs={12}>
-                <MonthlyUsage />
+                <Pulse />
               </Grid>
             </Grid>
           </Grid>

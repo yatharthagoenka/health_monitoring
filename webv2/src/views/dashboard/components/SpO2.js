@@ -1,18 +1,23 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import Chart from 'react-apexcharts';
 import { useTheme } from '@mui/material/styles';
 import { Grid, Stack, Typography, Avatar } from '@mui/material';
 import { IconArrowUpLeft } from '@tabler/icons';
-
 import DashboardCard from '../../../components/shared/DashboardCard';
+import {Alert, AlertTitle} from '@mui/material';
+import {socket} from "../../../services/socket.service"
 
-const StorageStats  = () => {
+const SpO2 = () => {
+  const [alerts, setAlerts] = useState([]);
+  const [SpO2Value, setSpO2Value] = useState(99);
+  const [seriescolumnchart, setSeriescolumnchart] = useState([98, 2]);
+  
   // chart color
   const theme = useTheme();
   const primary = theme.palette.primary.main;
   const primarylight = '#ecf2ff';
   const successlight = theme.palette.success.light;
-
+  
   // chart
   const optionscolumnchart = {
     chart: {
@@ -59,22 +64,35 @@ const StorageStats  = () => {
       },
     ],
   };
-  const seriescolumnchart = [47, 53];
+
+  useEffect(() => {
+    socket.on('spo2_receiver', data => {
+        console.log(seriescolumnchart)
+        setSeriescolumnchart([data-0, 100-data]);
+        if (data < 95) {
+          setAlerts(prevState => [...prevState, data]);
+        }
+        if (data > 95) {
+          setAlerts([]);
+        }
+
+    });
+  }, [alerts]);
 
   return (
-    <DashboardCard title="Services Used">
+    <DashboardCard title="SpO2 Percentage">
       <Grid container spacing={3}>
         {/* column */}
         <Grid item xs={7} sm={7}>
           <Typography variant="h3" fontWeight="700">
-            342 hours
+            {seriescolumnchart[0]} %
           </Typography>
           <Stack direction="row" spacing={1} mt={2} alignItems="center">
             <Avatar sx={{ bgcolor: successlight, width: 27, height: 27 }}>
               <IconArrowUpLeft width={20} color="#39B69A" />
             </Avatar>
             <Typography variant="subtitle2" fontWeight="600">
-              +9%
+              +1%
             </Typography>
             <Typography variant="subtitle2" color="textSecondary">
               last month
@@ -86,7 +104,7 @@ const StorageStats  = () => {
                 sx={{ width: 9, height: 9, bgcolor: primary, svg: { display: 'none' } }}
               ></Avatar>
               <Typography variant="subtitle2" color="textSecondary">
-                Used
+                Current
               </Typography>
             </Stack>
             <Stack direction="row" spacing={1} alignItems="center">
@@ -94,7 +112,7 @@ const StorageStats  = () => {
                 sx={{ width: 9, height: 9, bgcolor: primarylight, svg: { display: 'none' } }}
               ></Avatar>
               <Typography variant="subtitle2" color="textSecondary">
-                Available
+                Lost
               </Typography>
             </Stack>
           </Stack>
@@ -109,8 +127,14 @@ const StorageStats  = () => {
           />
         </Grid>
       </Grid>
+      {alerts.length >= 3 && (
+        <Alert severity="warning">
+          <AlertTitle>Warning</AlertTitle>
+            Temperature trend raising above 99 — <strong>about to alert gaurdian.</strong>
+        </Alert>
+      )}
     </DashboardCard>
   );
 };
 
-export default StorageStats;
+export default SpO2;

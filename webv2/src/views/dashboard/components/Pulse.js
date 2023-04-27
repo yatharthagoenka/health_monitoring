@@ -2,10 +2,10 @@ import React from 'react';
 import Chart from 'react-apexcharts';
 import { useTheme } from '@mui/material/styles';
 import { Stack, Typography, Avatar, Fab } from '@mui/material';
-import { IconArrowDownRight, IconDatabase } from '@tabler/icons';
+import { IconArrowDownRight, IconHeart } from '@tabler/icons';
 import DashboardCard from '../../../components/shared/DashboardCard';
 
-const MonthlyUsage = () => {
+const Pulse = () => {
   // chart color
   const theme = useTheme();
   const secondary = theme.palette.secondary.main;
@@ -53,10 +53,10 @@ const MonthlyUsage = () => {
 
   return (
     <DashboardCard
-      title="Inconsistency alerts"
+      title="Pulse rate"
       action={
         <Fab color="secondary" size="medium" sx={{color: '#ffffff'}}>
-          <IconDatabase width={24} />
+          <IconHeart width={24} />
         </Fab>
       }
       footer={
@@ -83,4 +83,4 @@ const MonthlyUsage = () => {
   );
 };
 
-export default MonthlyUsage;
+export default Pulse;

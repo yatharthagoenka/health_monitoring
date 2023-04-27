@@ -9,9 +9,6 @@ const BlankLayout = Loadable(lazy(() => import('../layouts/blank/BlankLayout')))
 /* ****Pages***** */
 const Home = Loadable(lazy(() => import('../views/home/Home')))
 const Dashboard = Loadable(lazy(() => import('../views/dashboard/Dashboard')))
-const Temperature = Loadable(lazy(() => import('../views/dashboard/Temperature')))
-const Pulse = Loadable(lazy(() => import('../views/dashboard/Pulse')))
-const SpO2 = Loadable(lazy(() => import('../views/dashboard/SpO2')))
 const Profile = Loadable(lazy(() => import('../views/dashboard/Profile')))
 const Error = Loadable(lazy(() => import('../views/authentication/Error')));
 const Register = Loadable(lazy(() => import('../views/authentication/Register')));
@@ -32,9 +29,6 @@ const Router = [
     children: [
       { path: '/user', element: <Navigate to="/user/dashboard" /> },
       { path: '/user/dashboard', exact: true, element: <Dashboard /> },
-      { path: '/user/temperature', exact: true, element: <Temperature /> },
-      { path: '/user/pulse', exact: true, element: <Pulse /> },
-      { path: '/user/spo2', exact: true, element: <SpO2 /> },
       { path: '/user/profile', exact: true, element: <Profile /> },
       { path: '*', element: <Navigate to="/auth/404" /> },
     ],
