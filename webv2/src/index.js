@@ -6,7 +6,7 @@ import { BrowserRouter } from 'react-router-dom';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <Suspense>
-    <BrowserRouter>
+    <BrowserRouter basename='webv2'>
       <App />
     </BrowserRouter>
   </Suspense>
