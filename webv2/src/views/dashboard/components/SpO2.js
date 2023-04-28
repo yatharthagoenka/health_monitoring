@@ -9,7 +9,6 @@ import {socket} from "../../../services/socket.service"
 
 const SpO2 = () => {
   const [alerts, setAlerts] = useState([]);
-  const [SpO2Value, setSpO2Value] = useState(99);
   const [seriescolumnchart, setSeriescolumnchart] = useState([98, 2]);
   
   // chart color

@@ -5,14 +5,16 @@ import DashboardCard from '../../../components/shared/DashboardCard';
 import Chart from 'react-apexcharts';
 import {socket} from "../../../services/socket.service"
 import {Alert, AlertTitle} from '@mui/material';
+import authService from 'src/services/auth.service';
 
 const Temperature = () => {
 
     // select
     const [month, setMonth] = useState('1');
     const [alerts, setAlerts] = useState([]);
-    const [tempData, setTempData] = useState([97]);
+    const [tempData, setTempData] = useState([97, 90, 101, 95, 92, 97, 94]);
     const [labels, setLabels] = useState([]);
+    const user = authService.getCurrentUser();
 
     const handleChange = (event) => {
         setMonth(event.target.value);
@@ -70,6 +72,11 @@ const Temperature = () => {
     ]; 
 
     useEffect(() => {
+        // console.log(user.user._id);
+        socket.emit("join", user.user._id);
+    }, []);
+
+    useEffect(() => {
         socket.on('temp_receiver', data => {
             const time = new Date().toLocaleTimeString();
             setLabels(prevLabels => [...prevLabels.slice(-15), time]);
@@ -83,6 +90,13 @@ const Temperature = () => {
 
         });
     }, []);
+
+    useEffect(()=>{
+        // Handle message events
+        socket.on('message', (message) => {
+          console.log(message);
+        });
+      })
 
     return (
         <>

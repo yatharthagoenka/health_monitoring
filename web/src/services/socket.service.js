@@ -1,3 +1,5 @@
 import socketIO from 'socket.io-client';
 
-export const socket = socketIO.connect(process.env.REACT_APP_API_URL);
+export const socket = socketIO.connect(process.env.REACT_APP_API_URL, {
+    auth: { token: localStorage.getItem('user').token }
+});

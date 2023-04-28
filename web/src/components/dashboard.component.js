@@ -12,15 +12,26 @@ function Dashboard() {
   const [SpO2Value, setSpO2Value] = useState(99);
   const navigate = useNavigate();
   const user = AuthService.getCurrentUser();
+  const token = user.token;
+  socket.io.opts.query = { token };
+
   useEffect(() => {
     if (!user) {
       navigate('/')
+    }else{
+      console.log(user.user._id)
     }
   }, []);
 
   useEffect(() => {
     socket.emit("temp_sender", tempValue);
   }, [tempValue]);
+
+  useEffect(() => {
+    socket.emit("join", user.user._id);
+
+    socket.emit("message", { to: user.user._id, text: "Hello!" });
+  }, []);
 
   useEffect(() => {
     socket.emit("pulse_sender", pulseValue);
@@ -41,6 +52,14 @@ function Dashboard() {
   const handleSpO2Change = (value) => {
     setSpO2Value(value);
   };
+
+  
+  useEffect(()=>{
+    // Handle message events
+    socket.on('message', (message) => {
+      console.log(message);
+    });
+  })
 
   return (
     <>
