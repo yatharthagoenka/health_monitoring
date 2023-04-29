@@ -1,0 +1,29 @@
+version: '3'
+networks:
+  hm-net:
+    external: true
+services:
+  hm_db:
+    container_name: hm_db_1
+    image: mongo:4.4
+    ports:
+      - "27015:27017"
+    volumes:
+      - mongo-hm:/data/hm-db
+    networks:
+      - hm-net
+  hm_server:
+    image: server_hm
+    container_name: hm_server_1
+    build: .
+    ports:
+      - "3005:3005"
+    environment:
+      - SERVER_PORT=3005
+      - MONGO_CONN_URL=mongodb://hm_db:27017
+    depends_on:
+      - hm_db
+    networks:
+      - hm-net
+volumes:
+  mongo-hm:
