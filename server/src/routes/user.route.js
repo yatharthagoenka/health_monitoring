@@ -2,6 +2,7 @@ const User = require('../models/user.schema');
 const express = require('express');
 const userRouter = express.Router();
 userRouter.use(express.json())
+const { handleSocketEvents } = require('../socket');
 
 userRouter.get('', (req, res) => {
     res.send('Server alive');

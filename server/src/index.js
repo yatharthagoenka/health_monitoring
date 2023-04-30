@@ -61,6 +61,14 @@ socketIO.on('connection', (socket) => {
   });
 });
 
-http.listen(process.env.SERVER_PORT, () => {
+app.post('/alert', async (req, res) => {
+  console.log(req.body.data)
+  const userID = req.body.userID;
+  const payload = req.body.data;
+  socketIO.to(userID).emit('alert', payload);
+  res.status(200).send("Received alert")
+})
+
+http.listen(process.env.SERVER_PORT, '0.0.0.0', () => {
   console.log(`Server listening on ${process.env.SERVER_PORT}`);
 });
