@@ -1,5 +1,7 @@
 import socketIO from 'socket.io-client';
-
+const userData = JSON.parse(localStorage.getItem('user'));
+const token = userData.token;
 export const socket = socketIO.connect(process.env.REACT_APP_API_URL, {
-    auth: { token: localStorage.getItem('user').token }
+    auth: { token: token }
 });
+socket.emit("join", userData.user._id);

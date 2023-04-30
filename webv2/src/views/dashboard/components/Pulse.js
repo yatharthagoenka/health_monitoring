@@ -56,10 +56,12 @@ const Pulse = () => {
 
   useEffect(() => {
     socket.on('pulse_receiver', data => {
+      const dataValue = data.value;
       setSeriescolumnchart(prevSeries => {
-        const newSeries = prevSeries[0].data.concat(data).slice(-10);
+        const newSeries = prevSeries[0].data.concat(dataValue).slice(-10);
         return [{ ...prevSeries[0], data: newSeries }];
       });
+      
     });
   }, []);
 

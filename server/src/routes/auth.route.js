@@ -24,13 +24,15 @@ router.post('/register', async (req, res) => {
     if (username) return res.status(400).send("User already exists");
     const salt = await bcrypt.genSalt(10);
     const hashPassword = await bcrypt.hash(req.body.password, salt);
-    const user = new User({
+    const userDTO = new User({
         username: req.body.username,
+        email: req.body.email,
         password: hashPassword,
     });
     try {
-        const savedUser = await user.save();
-        res.status(200).json(savedUser);
+        const user = await userDTO.save();
+        const token = jwt.sign({ _id: userDTO._id }, process.env.JWT_SECRET);
+        res.status(200).json({user, token});
     } catch (err) {
         res.status(400).send(err);
     }

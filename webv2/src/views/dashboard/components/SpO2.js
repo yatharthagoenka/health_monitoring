@@ -66,12 +66,12 @@ const SpO2 = () => {
 
   useEffect(() => {
     socket.on('spo2_receiver', data => {
-        console.log(seriescolumnchart)
-        setSeriescolumnchart([data-0, 100-data]);
-        if (data < 95) {
-          setAlerts(prevState => [...prevState, data]);
+        const dataValue = data.value;
+        setSeriescolumnchart([dataValue-0, 100-dataValue]);
+        if (dataValue < 95) {
+          setAlerts(prevState => [...prevState, dataValue]);
         }
-        if (data > 95) {
+        if (dataValue > 95) {
           setAlerts([]);
         }
 

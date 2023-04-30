@@ -69,34 +69,22 @@ const Temperature = () => {
             name: 'Data monitored',
             data: tempData,
         }
-    ]; 
-
-    useEffect(() => {
-        // console.log(user.user._id);
-        socket.emit("join", user.user._id);
-    }, []);
+    ];
 
     useEffect(() => {
         socket.on('temp_receiver', data => {
+            const dataValue = data.value;
             const time = new Date().toLocaleTimeString();
             setLabels(prevLabels => [...prevLabels.slice(-15), time]);
-            setTempData(prevData => [...prevData.slice(-15), data]);
-            if (data > 99) {
-              setAlerts(prevState => [...prevState, data]);
+            setTempData(prevData => [...prevData.slice(-15), dataValue]);
+            if (dataValue > 99) {
+              setAlerts(prevState => [...prevState, dataValue]);
             }
-            if (data < 99) {
+            if (dataValue < 99) {
               setAlerts([]);
             }
-
         });
     }, []);
-
-    useEffect(()=>{
-        // Handle message events
-        socket.on('message', (message) => {
-          console.log(message);
-        });
-      })
 
     return (
         <>

@@ -24,22 +24,22 @@ function Dashboard() {
   }, []);
 
   useEffect(() => {
-    socket.emit("temp_sender", tempValue);
+    socket.emit("join", user.user._id);
+  }, []);
+  
+  useEffect(() => {
+    socket.emit("temp_sender", { to: user.user._id, value: tempValue });
   }, [tempValue]);
 
   useEffect(() => {
-    socket.emit("join", user.user._id);
-
-    socket.emit("message", { to: user.user._id, text: "Hello!" });
-  }, []);
-
-  useEffect(() => {
-    socket.emit("pulse_sender", pulseValue);
+    socket.emit("pulse_sender", { to: user.user._id, value: pulseValue });
   }, [pulseValue]);
 
   useEffect(() => {
-    socket.emit("spo2_sender", SpO2Value);
+    socket.emit("spo2_sender", { to: user.user._id, value: SpO2Value });
   }, [SpO2Value]);
+
+
 
   const handleTempChange = (value) => {
     setTempValue(value);
@@ -52,14 +52,6 @@ function Dashboard() {
   const handleSpO2Change = (value) => {
     setSpO2Value(value);
   };
-
-  
-  useEffect(()=>{
-    // Handle message events
-    socket.on('message', (message) => {
-      console.log(message);
-    });
-  })
 
   return (
     <>
