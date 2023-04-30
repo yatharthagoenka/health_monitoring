@@ -37,17 +37,17 @@ socketIO.on('connection', (socket) => {
   });
 
   socket.on("temp_sender", async(info)=>{
-    console.log(info)
+    // console.log(info)
     handleSocketEvents(socket, info, "temp_receiver");
   })
 
   socket.on("pulse_sender", async(info)=>{
-    console.log(info)
+    // console.log(info)
     handleSocketEvents(socket, info, 'pulse_receiver');
   })
 
   socket.on("spo2_sender", async(info)=>{
-    console.log(info)
+    // console.log(info)
     handleSocketEvents(socket, info, 'spo2_receiver');
   })
 
