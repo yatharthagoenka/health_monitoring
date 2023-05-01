@@ -31,4 +31,21 @@ userRouter.get('/getOne/:userID', async (req, res) => {
     }
 });
 
+userRouter.patch('/update', async (req, res) => {
+    const userID = req.query.userID;
+    try {
+      const user = await User.findById(userID);
+      if (user) {
+        const field = req.body.field;
+        const value = req.body.value;
+        const updatedUser = await User.updateOne({ _id: userID }, { [field]: value });
+        res.status(200).json(updatedUser);
+      } else {
+        res.status(404).send(`Unable to find matching user with userID: ${userID}`);
+      }
+    } catch (error) {
+      res.status(500).send(error.message);
+    }
+});
+
 module.exports = userRouter;

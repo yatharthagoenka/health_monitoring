@@ -1,14 +1,33 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import PageContainer from 'src/components/container/PageContainer';
 import DashboardCard from '../../components/shared/DashboardCard';
-import { Box, Typography, Button } from '@mui/material';
-import { Link } from 'react-router-dom';
+import { Box, Typography } from '@mui/material';
 import { Stack } from '@mui/system';
-import CustomTextField from '../../components/shared/CustomTextField';
+import CustomTextFieldWithButton from 'src/components/shared/CustomTextFieldButton';
 import authService from 'src/services/auth.service';
 
 const Profile = () => {
-  const user = (authService.getCurrentUser()).user;
+  const user = authService.getCurrentUser().user;
+  const [state , setState] = useState({
+    username : "",
+    email: "",
+  })
+
+  useEffect(()=>{
+    console.log(user.email)
+    setState({
+      username: user.username,
+      email: user.email
+    })
+  }, [])
+
+  const handleChange = (e) => {
+    const {id, value} = e.target   
+    setState(prevState => ({
+        ...prevState,
+        [id] : value
+    }))
+  }
 
   return (
     <PageContainer title="Profile" description="Access user profile">
@@ -18,19 +37,12 @@ const Profile = () => {
             <Stack mb={3}>
                 <Typography variant="subtitle1"
                     fontWeight={600} component="label" htmlFor='name' mb="5px">Username</Typography>
-                <CustomTextField id="name" variant="outlined" fullWidth value={user.username} />
+                <CustomTextFieldWithButton id="username" placeholder={user.username} variant="outlined" fullWidth value={state.username} />
 
                 <Typography variant="subtitle1"
                     fontWeight={600} component="label" htmlFor='email' mb="5px" mt="25px">Email Address</Typography>
-                <CustomTextField id="email" variant="outlined" fullWidth value={user.email} />
-
-                <Typography variant="subtitle1"
-                    fontWeight={600} component="label" htmlFor='password' mb="5px" mt="25px">Password</Typography>
-                <CustomTextField id="password" variant="outlined" fullWidth value={user.password} />
+                <CustomTextFieldWithButton id="email" placeholder={user.email} variant="outlined" fullWidth value={state.email} />
             </Stack>
-            <Button color="primary" variant="contained" size="large" fullWidth component={Link} to="/auth/login">
-                Sign Up
-            </Button>
         </Box>
       </DashboardCard>
     </PageContainer>
