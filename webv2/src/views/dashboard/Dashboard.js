@@ -37,11 +37,11 @@ const Dashboard = () => {
               </Grid>
             </Grid>
           </Grid>
-          <Grid mt={5}>
+          <Grid mt={2}>
           {alerts && (
             <Alert severity="warning">
               <AlertTitle>Fall detected</AlertTitle>
-                A fall was detected by the remote device — <strong>about to alert gaurdian.</strong>
+                A fall was detected by the remote device — <strong>alerting gaurdian.</strong>
                 <Button onClick={handleDismissAlert}>Dismiss</Button>
             </Alert>
           )}

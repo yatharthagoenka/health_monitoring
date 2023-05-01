@@ -27,12 +27,17 @@ function Dashboard() {
     socket.emit("join", user.user._id);
   }, []);
   
-  useEffect(() => {
-    socket.emit("temp_sender", { to: user.user._id, value: tempValue });
-  }, [tempValue]);
 
   useEffect(() => {
-    socket.emit("pulse_sender", { to: user.user._id, value: pulseValue });
+    const intervalId = setInterval(() => {
+      const pulseValue = Math.floor(Math.random() * (78 - 70 + 1) + 70);
+      socket.emit("pulse_sender", { to: user.user._id, value: pulseValue });
+    }, 1000);
+
+    // Clean up the timer when the component unmounts
+    return () => {
+      clearInterval(intervalId);
+    };
   }, [pulseValue]);
 
   useEffect(() => {

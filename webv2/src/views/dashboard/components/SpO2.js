@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 import Chart from 'react-apexcharts';
 import { useTheme } from '@mui/material/styles';
 import { Grid, Stack, Typography, Avatar } from '@mui/material';
-import { IconArrowUpLeft } from '@tabler/icons';
+import { IconArrowUpLeft, IconHeart } from '@tabler/icons';
 import DashboardCard from '../../../components/shared/DashboardCard';
 import {Alert, AlertTitle} from '@mui/material';
 import {socket} from "../../../services/socket.service"
@@ -14,6 +14,7 @@ const SpO2 = () => {
   // chart color
   const theme = useTheme();
   const primary = theme.palette.primary.main;
+  const errorlight = '#fdede8';
   const primarylight = '#ecf2ff';
   const successlight = theme.palette.success.light;
   
@@ -74,8 +75,7 @@ const SpO2 = () => {
         if (dataValue > 95) {
           setAlerts([]);
         }
-
-    });
+    }); 
   }, [alerts]);
 
   return (
@@ -87,15 +87,24 @@ const SpO2 = () => {
             {seriescolumnchart[0]} %
           </Typography>
           <Stack direction="row" spacing={1} mt={2} alignItems="center">
-            <Avatar sx={{ bgcolor: successlight, width: 27, height: 27 }}>
-              <IconArrowUpLeft width={20} color="#39B69A" />
-            </Avatar>
-            <Typography variant="subtitle2" fontWeight="600">
-              +1%
-            </Typography>
-            <Typography variant="subtitle2" color="textSecondary">
-              last month
-            </Typography>
+            {seriescolumnchart[0]>=95 ? 
+            <>
+              <Avatar sx={{ bgcolor: successlight, width: 27, height: 27 }}>
+                <IconHeart width={20} color="#c6cf9d" />
+              </Avatar>
+              <Typography variant="subtitle2" fontWeight="700" mt="-20px">
+                Normal
+              </Typography>
+            </>
+            : <>
+              <Avatar sx={{ bgcolor: errorlight, width: 27, height: 27 }}>
+                  <IconHeart width={20} color="#e00" />
+                </Avatar>
+              <Typography variant="subtitle2" fontWeight="700" mt="-20px">
+                Dropping low
+              </Typography>
+              </>
+            }
           </Stack>
           <Stack spacing={3} mt={5} direction="row">
             <Stack direction="row" spacing={1} alignItems="center">
@@ -129,7 +138,7 @@ const SpO2 = () => {
       {alerts.length >= 3 && (
         <Alert severity="warning">
           <AlertTitle>Warning</AlertTitle>
-            Temperature trend raising above 99 — <strong>about to alert gaurdian.</strong>
+            Temperature trend raising above 99 — <strong>suggested consultancy.</strong>
         </Alert>
       )}
     </DashboardCard>

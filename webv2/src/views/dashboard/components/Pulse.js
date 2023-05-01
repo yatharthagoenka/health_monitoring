@@ -2,13 +2,13 @@ import React, {useState, useEffect} from 'react';
 import Chart from 'react-apexcharts';
 import { useTheme } from '@mui/material/styles';
 import { Stack, Typography, Avatar, Fab } from '@mui/material';
-import { IconArrowDownRight, IconHeart } from '@tabler/icons';
+import { IconArrowDownRight, IconArrowUpLeft, IconHeart } from '@tabler/icons';
 import DashboardCard from '../../../components/shared/DashboardCard';
 import {socket} from "../../../services/socket.service"
 import {Alert, AlertTitle} from '@mui/material';
 
 const Pulse = () => {
-  const [alerts, setAlerts] = useState([]);
+  const [alerts, setAlerts] = useState("Normal");
   const [meanPulse, setMeanPulse] = useState(72);
 
   // chart color
@@ -16,6 +16,7 @@ const Pulse = () => {
   const secondary = theme.palette.secondary.main;
   const secondarylight = '#f5fcff';
   const errorlight = '#fdede8';
+  const successlight = '#E6FFFA';
   const [seriescolumnchart, setSeriescolumnchart] = useState([{
     name: '',
     color: secondary,
@@ -65,6 +66,22 @@ const Pulse = () => {
     });
   }, []);
 
+  useEffect(() => {
+    const data = seriescolumnchart[0].data;
+    const sum = data.reduce((a, b) => a + b, 0);
+    const mean = sum / data.length;
+    setMeanPulse(mean);
+    if(mean<70){
+      setAlerts("Dropping low")
+    }
+    if(mean>=70 && mean<=95){
+      setAlerts("Normal")
+    }
+    if(mean>=95){
+      setAlerts("Higher than usual")
+    }
+  }, [seriescolumnchart]);
+
 
   return (
     <DashboardCard
@@ -80,17 +97,18 @@ const Pulse = () => {
     >
       <>
         <Typography variant="h3" fontWeight="700" mt="-20px">
-          {meanPulse}
+          {meanPulse} bpm
         </Typography>
         <Stack direction="row" spacing={1} my={1} alignItems="center">
-          <Avatar sx={{ bgcolor: errorlight, width: 27, height: 27 }}>
-            <IconArrowDownRight width={20} color="#FA896B" />
-          </Avatar>
-          <Typography variant="subtitle2" fontWeight="600">
-            -12%
-          </Typography>
-          <Typography variant="subtitle2" color="textSecondary">
-            last month
+          {alerts=="Normal" ? 
+            <Avatar sx={{ bgcolor: successlight, width: 27, height: 27 }}>
+              <IconHeart width={20} color="#c6cf9d" />
+            </Avatar>
+          : <Avatar sx={{ bgcolor: errorlight, width: 27, height: 27 }}>
+              <IconHeart width={20} color="#e00" />
+            </Avatar>}
+          <Typography variant="subtitle2" fontWeight="700" mt="-20px">
+            {alerts}
           </Typography>
         </Stack>
       </>
